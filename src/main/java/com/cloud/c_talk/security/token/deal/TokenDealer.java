@@ -33,9 +33,12 @@ public class TokenDealer {
      * @param tokenString
      * @return
      */
-    public static boolean checkTokenInvalid (String tokenString) {
+    public static Token checkTokenInvalidAndToken (String tokenString) {
         Token token = decryptToken(tokenString);
-        return token == null || checkOverTime(token) || checkForge(token);
+        if (token == null || checkOverTime(token) || checkForge(token)) {
+            return null;
+        }
+        return token;
     }
 
     /**
@@ -49,8 +52,6 @@ public class TokenDealer {
         long time = token.getLastLoggedTime() + token.getExpiryTime();
         // 如果超时时间戳 > 当前时间，没超时，更新时间戳
         if (time > current) {
-            // update time
-            token.setLastLoggedTime(current);
             return false;
         }
         // 从token中心删除
@@ -77,6 +78,15 @@ public class TokenDealer {
      */
     public static String generateTokenString (String username) {
         Token token = new Token(username);
+        return generateTokenString(token);
+    }
+
+    /**
+     * 生成token
+     * @param token
+     * @return
+     */
+    public static String generateTokenString (Token token) {
         // 注册到token中心
         TokenCenter.registerToken(token);
         return DESUtil.encrypt(token.toString());

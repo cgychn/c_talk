@@ -1,6 +1,7 @@
 package com.cloud.c_talk.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +12,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.*;
 
 public class PayloadRequestWrapper extends HttpServletRequestWrapper {
-    private String body = null;
+    private String body = "";
 
     private final static Logger logger = LoggerFactory.getLogger(PayloadRequestWrapper.class);
 
@@ -31,7 +32,17 @@ public class PayloadRequestWrapper extends HttpServletRequestWrapper {
                     stringBuilder.append(charBuffer, 0, bytesRead);
                 }
             }
-            body = RSAUtil.decryptWithPri1(JSONObject.parseObject(stringBuilder.toString()).getString("data"));
+            String str = stringBuilder.toString();
+            JSONObject jsonObject;
+            if (!(StringUtils.isEmpty(str) || null == (jsonObject = JSONObject.parseObject(str)))) {
+                if (jsonObject.isEmpty()) {
+                    body = "{}";
+                } else if (StringUtils.isEmpty(str = jsonObject.getString("data"))) {
+                    body = "{}";
+                } else {
+                    body = RSAUtil.decryptWithPri1(str);
+                }
+            }
         } catch (Exception e) {
             logger.error(e.getMessage());
         } finally {

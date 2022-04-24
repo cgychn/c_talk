@@ -1,6 +1,7 @@
 package com.cloud.c_talk.config.filter;
 
 import com.cloud.c_talk.security.token.deal.TokenDealer;
+import com.cloud.c_talk.security.token.entity.Token;
 import com.cloud.c_talk.utils.PayloadRequestWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,13 @@ public class TalkSecurityFilter implements Filter {
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         String tokenString = httpServletRequest.getHeader("token");
         String contentType = httpServletRequest.getContentType();
-        if (exclude.contains(httpServletRequest.getRequestURI()) || !TokenDealer.checkTokenInvalid(tokenString)) {
+        Token token;
+        if (exclude.contains(httpServletRequest.getRequestURI())) {
+            // 拦截器释放路径（不处理）
+            filterChain.doFilter(servletRequest, servletResponse);
+        } else if (null != (token = TokenDealer.checkTokenInvalidAndToken(tokenString))) {
+            // 设置到属性，全局可访问
+            httpServletRequest.setAttribute("token_obj", token);
             // 仅对文本数据加密
             if ("application/json".equals(contentType)) {
                 filterChain.doFilter(new PayloadRequestWrapper(httpServletRequest), servletResponse);
