@@ -31,7 +31,7 @@ public class PayloadRequestWrapper extends HttpServletRequestWrapper {
                     stringBuilder.append(charBuffer, 0, bytesRead);
                 }
             }
-            body = DESUtil.decrypt(JSONObject.parseObject(stringBuilder.toString()).getString("data"));
+            body = RSAUtil.decryptWithPri1(JSONObject.parseObject(stringBuilder.toString()).getString("data"));
         } catch (Exception e) {
             logger.error(e.getMessage());
         } finally {
