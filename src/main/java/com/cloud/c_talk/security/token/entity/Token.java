@@ -2,14 +2,13 @@ package com.cloud.c_talk.security.token.entity;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cloud.c_talk.utils.MD5Util;
-import com.cloud.c_talk.utils.RequestHolder;
 
 import java.util.UUID;
 
 public class Token {
     private String username;
     private String hash;
-    private String uuid = UUID.randomUUID().toString();
+    private String uuid;
     private long expiryTime = 1000 * 60 * 60 * 2; // 2h
     private long lastLoggedTime = System.currentTimeMillis();
 
@@ -22,8 +21,13 @@ public class Token {
     }
 
     public Token(String username) {
+        uuid = UUID.randomUUID().toString();
         this.username = username;
         this.hash = MD5Util.encrypt(username + " " + uuid);
+    }
+
+    public Token() {
+
     }
 
     public String getUuid() {
