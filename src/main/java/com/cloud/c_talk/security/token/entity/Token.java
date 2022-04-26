@@ -4,11 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.cloud.c_talk.utils.MD5Util;
 import com.cloud.c_talk.utils.RequestHolder;
 
+import java.util.UUID;
+
 public class Token {
-    String username;
-    String hash;
-    long expiryTime = 1000 * 60 * 60 * 2; // 2h
-    long lastLoggedTime = System.currentTimeMillis();
+    private String username;
+    private String hash;
+    private String uuid = UUID.randomUUID().toString();
+    private long expiryTime = 1000 * 60 * 60 * 2; // 2h
+    private long lastLoggedTime = System.currentTimeMillis();
 
     public String getHash() {
         return hash;
@@ -18,9 +21,17 @@ public class Token {
         this.hash = hash;
     }
 
-    public Token (String username) {
+    public Token(String username) {
         this.username = username;
-        this.hash = MD5Util.encrypt(username + " || " + RequestHolder.getIpAddr());
+        this.hash = MD5Util.encrypt(username + " " + uuid);
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getUsername() {

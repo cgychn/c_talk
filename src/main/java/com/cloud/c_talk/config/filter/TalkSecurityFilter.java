@@ -1,8 +1,10 @@
 package com.cloud.c_talk.config.filter;
 
 import com.cloud.c_talk.security.token.deal.TokenDealer;
+import com.cloud.c_talk.security.token.entity.RequestTokenEntity;
 import com.cloud.c_talk.security.token.entity.Token;
 import com.cloud.c_talk.utils.PayloadRequestWrapper;
+import com.cloud.c_talk.utils.SpringContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.servlet.*;
@@ -21,6 +23,8 @@ public class TalkSecurityFilter implements Filter {
 
     private static final Logger logger = LoggerFactory.getLogger(TalkSecurityFilter.class);
 
+    private static TokenDealer tokenDealer;
+
     private static final Set<String> exclude = new HashSet<String>(){{
         add("/security/login");
     }};
@@ -30,6 +34,9 @@ public class TalkSecurityFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        if (tokenDealer == null) {
+            tokenDealer = SpringContextHolder.getBean(TokenDealer.class);
+        }
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         String tokenString = httpServletRequest.getHeader("token");
@@ -38,7 +45,7 @@ public class TalkSecurityFilter implements Filter {
         if (exclude.contains(httpServletRequest.getRequestURI())) {
             // 拦截器释放路径（不处理）
             filterChain.doFilter(servletRequest, servletResponse);
-        } else if (null != (token = TokenDealer.checkTokenInvalidAndToken(tokenString))) {
+        } else if (null != (token = tokenDealer.checkTokenInvalidAndGetToken(RequestTokenEntity.build().setToken(tokenString)))) {
             // 设置到属性，全局可访问
             httpServletRequest.setAttribute("token_obj", token);
             // 仅对文本数据加密
