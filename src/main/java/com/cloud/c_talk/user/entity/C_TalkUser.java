@@ -2,9 +2,17 @@ package com.cloud.c_talk.user.entity;
 
 import com.cloud.c_talk.utils.MD5Util;
 
+import java.util.Date;
+
 public class C_TalkUser {
 
     private String username;
+
+    private String nickname;
+
+    private String email;
+
+    private String phoneNum;
 
     private String password;
 
@@ -13,6 +21,40 @@ public class C_TalkUser {
     private String sex;
 
     private int age;
+
+    private Date regTime;
+
+    public Date getRegTime() {
+        return regTime;
+    }
+
+    public void setRegTime(Date regTime) {
+        this.regTime = regTime;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
     public String getUsername() {
         return username;

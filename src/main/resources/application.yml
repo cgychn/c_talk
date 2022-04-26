@@ -19,7 +19,9 @@ spring:
     password: 123456
     url: jdbc:mysql://localhost:3306/c_talk?rewriteBatchedStatements=true&characterEncoding=utf8&serverTimezone=GMT&autoReconnect=true&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: root
-
+    data:
+      mongodb:
+        uri: mongodb://cgy:cgy123456@192.168.85.51:27017/c_talk
 
 eureka:
   instance:
