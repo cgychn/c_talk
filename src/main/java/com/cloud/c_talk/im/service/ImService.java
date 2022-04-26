@@ -17,9 +17,13 @@ public class ImService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public void sendMessageToFriend (ImMessage message) {}
+    public void sendMessageToFriend (ImMessage message) {
 
-    public void sendMessageToGroup (ImGroupMessage imGroupMessage) {}
+    }
+
+    public void sendMessageToGroup (ImGroupMessage imGroupMessage) {
+
+    }
 
     public List<ImMessage> getFriendMessages (ImMessageFilter filter) {
         return new ArrayList<>();
