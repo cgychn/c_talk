@@ -1,7 +1,7 @@
 package com.cloud.c_talk.user.service;
 
 import com.cloud.c_talk.security.token.service.SecurityService;
-import com.cloud.c_talk.user.dao.UserMapper;
+import com.cloud.c_talk.user.dao.UserDao;
 import com.cloud.c_talk.user.entity.C_TalkUser;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +13,11 @@ public class UserService {
     @Autowired
     private SecurityService securityService;
 
+//    @Autowired
+//    private UserMapper userMapper;
+
     @Autowired
-    private UserMapper userMapper;
+    private UserDao userDao;
 
     /**
      * 检查user是否合法
@@ -33,7 +36,9 @@ public class UserService {
         if (userCheck(user)) {
             // 加密密码
             user.encryptPassword();
-            return userMapper.addUser(user) > 0;
+//            return userMapper.addUser(user) > 0;
+            userDao.addUser(user);
+            return true;
         } else {
             return false;
         }
@@ -47,7 +52,8 @@ public class UserService {
         // 删除token
         securityService.removeTokenByUsername(user.getUsername());
         // 操作数据库
-        return userMapper.removeUser(user.getUsername()) > 0;
+//        return userMapper.removeUser(user.getUsername()) > 0;
+        return userDao.removeUser(user.getUsername()) > 0;
     }
 
     /**
@@ -56,7 +62,8 @@ public class UserService {
      */
     public boolean updateUser (C_TalkUser user) {
         user.encryptPassword();
-        return userMapper.updateUser(user) > 0;
+//        return userMapper.updateUser(user) > 0;
+        return userDao.updateUser(user) > 0;
     }
 
 }

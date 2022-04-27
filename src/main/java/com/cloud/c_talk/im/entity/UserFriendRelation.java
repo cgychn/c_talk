@@ -1,7 +1,10 @@
 package com.cloud.c_talk.im.entity;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Date;
 
+@Document(collection = "user_friend_relation")
 public class UserFriendRelation {
 
     private String mainUsername;

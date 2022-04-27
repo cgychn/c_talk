@@ -1,9 +1,11 @@
 package com.cloud.c_talk.user.entity;
 
 import com.cloud.c_talk.utils.MD5Util;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
+@Document(collection = "user")
 public class C_TalkUser {
 
     private String username;

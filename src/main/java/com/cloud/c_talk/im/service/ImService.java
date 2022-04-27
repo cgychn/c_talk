@@ -14,9 +14,6 @@ import java.util.List;
 @Service
 public class ImService {
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
-
     public void sendMessageToFriend (ImMessage message) {
 
     }

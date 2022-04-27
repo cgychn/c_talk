@@ -1,6 +1,10 @@
 package com.cloud.c_talk.config.websocket;
 
+import com.alibaba.fastjson.JSONObject;
+import com.cloud.c_talk.utils.ResultUtil;
+
 import javax.websocket.Session;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class WebSocketEventBus {
@@ -11,8 +15,8 @@ public class WebSocketEventBus {
         webSocketEventSessions.put(sid, session);
     }
 
-    public static void notify (String sid) {
-
+    public static void notify (String sid, String message) throws IOException {
+        webSocketEventSessions.get(sid).getBasicRemote().sendText(JSONObject.toJSONString(ResultUtil.result(true, message, "")));
     }
 
 }

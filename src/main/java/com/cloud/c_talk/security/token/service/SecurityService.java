@@ -3,7 +3,7 @@ package com.cloud.c_talk.security.token.service;
 import com.cloud.c_talk.security.token.deal.TokenDealer;
 import com.cloud.c_talk.security.token.entity.RequestTokenEntity;
 import com.cloud.c_talk.security.token.entity.Token;
-import com.cloud.c_talk.user.dao.UserMapper;
+import com.cloud.c_talk.user.dao.UserDao;
 import com.cloud.c_talk.utils.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class SecurityService {
     private TokenDealer tokenDealer;
 
     @Autowired
-    private UserMapper userMapper;
+    private UserDao userDao;
 
     /**
      * 检查登录用户名和密码
@@ -26,7 +26,7 @@ public class SecurityService {
     public boolean checkUsernameAndPassword (String username, String password) {
         // 加密密码
         password = MD5Util.encrypt(password);
-        return userMapper.getUserByUsernameAndPassword(username, password) != null;
+        return userDao.getUserByUsernameAndPassword(username, password) != null;
     }
 
     /**

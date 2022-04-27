@@ -4,24 +4,13 @@ server:
 spring:
   application:
     name: c-talk
-  datasource:
-    chatType: com.zaxxer.hikari.HikariDataSource
-    driver-class-name: com.mysql.jdbc.Driver
-    hikari:
-      auto-commit: true
-      connection-test-query: SELECT 1
-      connection-timeout: 30000
-      idle-timeout: 30000
-      max-lifetime: 1800000
-      maximum-pool-size: 15
-      minimum-idle: 5
-      pool-name: DatebookHikariCP
-    password: 123456
-    url: jdbc:mysql://localhost:3306/c_talk?rewriteBatchedStatements=true&characterEncoding=utf8&serverTimezone=GMT&autoReconnect=true&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull&useSSL=false
-    username: root
-    data:
-      mongodb:
-        uri: mongodb://cgy:cgy123456@192.168.85.51:27017/c_talk
+  data:
+    mongodb:
+      username: cgy
+      password: cgy123456
+      host: 192.168.85.51
+      port: 27017
+      database: c_talk
 
 eureka:
   instance:
@@ -37,10 +26,3 @@ feign:
       default:
         connect-timeout: 2000
         readTimeout: 60000
-
-mybatis:
-  #mapper配置文件
-  mapper-locations: classpath:mapper/*.xml,classpath:mapper/**/*.xml
-  #开启驼峰命名
-  configuration:
-    map-underscore-to-camel-case: true
