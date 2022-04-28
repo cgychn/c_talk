@@ -11,11 +11,21 @@ public class UserFriendRelation {
 
     private String friendUsername;
 
+    private String friendNickname;
+
     private Date becomeFriendDate;
 
     private int status; // 0：默认 1：标星 2：拉黑
 
     private float cohesion; // 亲密度，推荐用
+
+    public String getFriendNickname() {
+        return friendNickname;
+    }
+
+    public void setFriendNickname(String friendNickname) {
+        this.friendNickname = friendNickname;
+    }
 
     public String getMainUsername() {
         return mainUsername;

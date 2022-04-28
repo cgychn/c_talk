@@ -1,4 +1,4 @@
-package com.cloud.c_talk.config;
+package com.cloud.c_talk;
 
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;

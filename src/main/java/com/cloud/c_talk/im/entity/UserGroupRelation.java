@@ -8,11 +8,21 @@ public class UserGroupRelation {
 
     private String groupAccount;
 
+    private String mainUserNickname;
+
     private Date enterGroupDateTime;
 
     private int status; // 0：默认 1：标星
 
     private float cohesion; // 亲密度，推荐用
+
+    public String getMainUserNickname() {
+        return mainUserNickname;
+    }
+
+    public void setMainUserNickname(String mainUserNickname) {
+        this.mainUserNickname = mainUserNickname;
+    }
 
     public Date getEnterGroupDateTime() {
         return enterGroupDateTime;
