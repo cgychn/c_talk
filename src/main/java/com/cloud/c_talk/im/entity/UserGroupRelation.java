@@ -1,14 +1,17 @@
 package com.cloud.c_talk.im.entity;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Date;
 
+@Document(collection = "user_group_relation")
 public class UserGroupRelation {
 
     private String mainUsername;
 
     private String groupAccount;
 
-    private String mainUserNickname;
+    private String groupNickname;
 
     private Date enterGroupDateTime;
 
@@ -16,12 +19,12 @@ public class UserGroupRelation {
 
     private float cohesion; // 亲密度，推荐用
 
-    public String getMainUserNickname() {
-        return mainUserNickname;
+    public String getGroupNickname() {
+        return groupNickname;
     }
 
-    public void setMainUserNickname(String mainUserNickname) {
-        this.mainUserNickname = mainUserNickname;
+    public void setGroupNickname(String groupNickname) {
+        this.groupNickname = groupNickname;
     }
 
     public Date getEnterGroupDateTime() {

@@ -1,12 +1,17 @@
 package com.cloud.c_talk.im.entity;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Date;
 
+@Document(collection = "im_group_message")
 public class ImGroupMessage {
 
     private String mainUsername;
 
     private String groupAccount;
+
+    private String senderUsername;
 
     private String msgContent;
 
@@ -15,6 +20,14 @@ public class ImGroupMessage {
     private Date sendDateTime;
 
     private int readStatus;
+
+    public String getSenderUsername() {
+        return senderUsername;
+    }
+
+    public void setSenderUsername(String senderUsername) {
+        this.senderUsername = senderUsername;
+    }
 
     public String getMainUsername() {
         return mainUsername;
