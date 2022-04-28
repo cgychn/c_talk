@@ -2,7 +2,7 @@ package com.cloud.c_talk.im.filter;
 
 public class UserFriendRelationFilter {
 
-    private String filter;
+    private String filter = "";
 
     private String mainUsername;
 

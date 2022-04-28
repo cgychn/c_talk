@@ -12,9 +12,29 @@ public class ImMessageFilter {
 
     private Date endTime;
 
-    private int type; // 同 UserFriendRelation 中的 type 的定义
+    private Integer type; // 同 UserFriendRelation 中的 type 的定义
 
     private String textFilter;
+
+    private int page;
+
+    private int pageSize;
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
 
     public String getMainUsername() {
         return mainUsername;
@@ -48,11 +68,11 @@ public class ImMessageFilter {
         this.endTime = endTime;
     }
 
-    public int getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 

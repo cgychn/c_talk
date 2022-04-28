@@ -1,7 +1,10 @@
 package com.cloud.c_talk.im.entity;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Date;
 
+@Document(collection = "im_message")
 public class ImMessage {
 
     private String mainUsername;
