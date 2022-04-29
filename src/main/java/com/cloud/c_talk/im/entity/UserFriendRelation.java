@@ -19,6 +19,8 @@ public class UserFriendRelation {
 
     private float cohesion; // 亲密度，推荐用
 
+    private int unReadMsgCount; // 未读消息数
+
     public String getFriendNickname() {
         return friendNickname;
     }

@@ -1,12 +1,15 @@
 package com.cloud.c_talk.user.dao;
 
 import com.cloud.c_talk.user.entity.C_TalkUser;
+import com.cloud.c_talk.user.filter.UserFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class UserDao {
@@ -58,6 +61,40 @@ public class UserDao {
         update.set("sex", user.getSex());
         update.set("regTime", user.getRegTime());
         return mongoTemplate.updateFirst(query, update, C_TalkUser.class).getMatchedCount();
+    }
+
+    /**
+     * 获取用户query
+     * @param userFilter
+     * @return
+     */
+    public Query getUserQuery (UserFilter userFilter) {
+        return new Query(new Criteria().orOperator(
+                Criteria.where("username").regex(".*?" + userFilter.getFilter() + ".*"),
+                Criteria.where("nickname").regex(".*?" + userFilter.getFilter() + ".*")
+        ));
+    }
+
+    /**
+     * 获取用户列表
+     * @param userFilter
+     * @return
+     */
+    public List<C_TalkUser> getUserList (UserFilter userFilter) {
+        Query query = getUserQuery(userFilter);
+        query.skip(userFilter.getPage() * userFilter.getPageSize());
+        query.limit(userFilter.getPageSize());
+        return mongoTemplate.find(query, C_TalkUser.class);
+    }
+
+    /**
+     * 获取用户数
+     * @param userFilter
+     * @return
+     */
+    public long getCountUserList (UserFilter userFilter) {
+        Query query = getUserQuery(userFilter);
+        return mongoTemplate.count(query,C_TalkUser.class);
     }
 
 }

@@ -7,8 +7,6 @@ import java.util.Date;
 @Document(collection = "im_group_message")
 public class ImGroupMessage {
 
-    private String mainUsername;
-
     private String groupAccount;
 
     private String senderUsername;
@@ -27,14 +25,6 @@ public class ImGroupMessage {
 
     public void setSenderUsername(String senderUsername) {
         this.senderUsername = senderUsername;
-    }
-
-    public String getMainUsername() {
-        return mainUsername;
-    }
-
-    public void setMainUsername(String mainUsername) {
-        this.mainUsername = mainUsername;
     }
 
     public String getGroupAccount() {

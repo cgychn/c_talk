@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class UserGroupRelationDao {
@@ -92,5 +93,18 @@ public class UserGroupRelationDao {
     public boolean checkUserInGroup (String username, String groupAccount) {
         Query query = new Query(Criteria.where("groupAccount").is(groupAccount).and("mainUsername").is(username));
         return mongoTemplate.count(query, UserGroupRelation.class) > 0;
+    }
+
+    /**
+     * 获取群成员
+     * @param groupAccount
+     * @return
+     */
+    public List<String> getGroupMembers (String groupAccount) {
+        Query query = new Query(Criteria.where("groupAccount").is(groupAccount));
+        return mongoTemplate.find(query, UserGroupRelation.class)
+                .stream()
+                .map(UserGroupRelation::getMainUsername)
+                .collect(Collectors.toList());
     }
 }

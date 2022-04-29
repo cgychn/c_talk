@@ -27,13 +27,17 @@ public class ResultUtil {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("result", bol);
             // 将data加密
-            jsonObject.put("data", RSAUtil.encryptWithPub1(data == null ? null : data.toString()));
+            jsonObject.put("data", getDataString(data));
             jsonObject.put("message", message);
             return jsonObject;
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
         return null;
+    }
+
+    public static String getDataString (Object data) throws Exception {
+        return RSAUtil.encryptWithPub1(data == null ? null : JSONObject.toJSONString(data));
     }
 
 }

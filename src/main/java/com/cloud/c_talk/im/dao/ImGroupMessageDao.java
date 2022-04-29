@@ -37,9 +37,6 @@ public class ImGroupMessageDao {
         if (imGroupMessageFilter.getStartTime() != null && imGroupMessageFilter.getEndTime() != null) {
             ands.add(Criteria.where("sendDateTime").gte(imGroupMessageFilter.getStartTime()).lte(imGroupMessageFilter.getEndTime()));
         }
-        if (!StringUtils.isEmpty(imGroupMessageFilter.getMainUsername())) {
-            ands.add(Criteria.where("mainUsername").is(imGroupMessageFilter.getMainUsername()));
-        }
         if (!StringUtils.isEmpty(imGroupMessageFilter.getGroupAccount())) {
             ands.add(Criteria.where("groupAccount").is(imGroupMessageFilter.getGroupAccount()));
         }
