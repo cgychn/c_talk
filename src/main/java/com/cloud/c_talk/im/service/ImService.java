@@ -1,19 +1,16 @@
 package com.cloud.c_talk.im.service;
 
-import com.cloud.c_talk.im.dao.ImGroupMessageDao;
-import com.cloud.c_talk.im.dao.ImMessageDao;
-import com.cloud.c_talk.im.dao.UserFriendRelationDao;
-import com.cloud.c_talk.im.dao.UserGroupRelationDao;
+import com.cloud.c_talk.im.dao.*;
 import com.cloud.c_talk.im.dto.Page;
-import com.cloud.c_talk.im.entity.ImGroupMessage;
-import com.cloud.c_talk.im.entity.ImMessage;
-import com.cloud.c_talk.im.entity.UserFriendRelation;
-import com.cloud.c_talk.im.entity.UserGroupRelation;
+import com.cloud.c_talk.im.entity.*;
 import com.cloud.c_talk.im.filter.ImGroupMessageFilter;
 import com.cloud.c_talk.im.filter.ImMessageFilter;
 import com.cloud.c_talk.im.filter.UserFriendRelationFilter;
 import com.cloud.c_talk.im.filter.UserGroupRelationFilter;
 import com.cloud.c_talk.notification.NotificationService;
+import com.cloud.c_talk.user.dao.UserDao;
+import com.cloud.c_talk.user.entity.C_TalkUser;
+import com.cloud.c_talk.utils.RequestHolder;
 import com.cloud.c_talk.utils.ResultUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +37,15 @@ public class ImService {
 
     @Autowired
     private UserFriendRelationDao userFriendRelationDao;
+
+    @Autowired
+    private ImGroupDao imGroupDao;
+
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private FriendRequestDao friendRequestDao;
 
     private final Logger logger = LoggerFactory.getLogger(ImService.class);
 
@@ -132,12 +138,14 @@ public class ImService {
      * @param friendUsername
      */
     public void becomeFriend (String mainUsername, String friendUsername) {
+        C_TalkUser user = userDao.getUserByUsername(friendUsername);
         UserFriendRelation userFriendRelation = new UserFriendRelation();
         userFriendRelation.setMainUsername(mainUsername);
         userFriendRelation.setFriendUsername(friendUsername);
         userFriendRelation.setStatus(0);
         userFriendRelation.setCohesion(0);
         userFriendRelation.setBecomeFriendDate(new Date());
+        userFriendRelation.setFriendNickname(user.getNickname());
         userFriendRelationDao.insertFriendRel(userFriendRelation);
     }
 
@@ -147,9 +155,64 @@ public class ImService {
      * @param groupAccount
      */
     public void enterGroup (String mainUsername, String groupAccount) {
+        ImGroup imGroup = imGroupDao.getGroupByGroupAccount(groupAccount);
         UserGroupRelation userGroupRelation = new UserGroupRelation();
         userGroupRelation.setMainUsername(mainUsername);
+        userGroupRelation.setEnterGroupDateTime(new Date());
+        userGroupRelation.setCohesion(0);
+        userGroupRelation.setGroupAccount(groupAccount);
+        userGroupRelation.setStatus(0);
+        userGroupRelation.setGroupNickname(imGroup.getGroupNickname());
         userGroupRelationDao.insertGroupRel(userGroupRelation);
+    }
+
+    /**
+     * 申请加好友，加群
+     * @param mainUsername
+     * @param toUsername
+     * @param type
+     */
+    public void sendFriendRequest (String mainUsername, String toUsername, int type) {
+        C_TalkUser mainUser = userDao.getUserByUsername(mainUsername);
+        FriendRequest friendRequest = new FriendRequest();
+        friendRequest.setType(type);
+        friendRequest.setStatus(0);
+        friendRequest.setBecomeFriendWithWhoUsername(toUsername);
+        friendRequest.setRequestUserNickname(mainUser.getNickname());
+        friendRequest.setRequestUsername(mainUsername);
+        if (type == 0) {
+            C_TalkUser toUser = userDao.getUserByUsername(toUsername);
+            // 好友
+            friendRequest.setBecomeFriendWithWhoNickname(toUser.getNickname());
+            friendRequest.setReceiverUsername(toUsername);
+        } else if (type == 1) {
+            // 群
+            ImGroup toGroup = imGroupDao.getGroupByGroupAccount(toUsername);
+            friendRequest.setBecomeFriendWithWhoNickname(toGroup.getGroupNickname());
+            friendRequest.setReceiverUsername(toGroup.getGroupOwnerUsername());
+        }
+        friendRequestDao.addFriendRequest(friendRequest);
+    }
+
+    /**
+     * 同意申请，并成为好友
+     * @param friendRequest
+     */
+    public void acceptFriendRequest (FriendRequest friendRequest) {
+        friendRequestDao.acceptRequest(friendRequest);
+        if (friendRequest.getType() == 0) {
+            becomeFriend(friendRequest.getRequestUsername(), friendRequest.getBecomeFriendWithWhoUsername());
+        } else if (friendRequest.getType() == 1) {
+            enterGroup(friendRequest.getRequestUsername(), friendRequest.getBecomeFriendWithWhoUsername());
+        }
+    }
+
+    /**
+     * 拒绝申请
+     * @param friendRequest
+     */
+    public void deniedFriendRequest (FriendRequest friendRequest) {
+        friendRequestDao.deniedRequest(friendRequest);
     }
 
 }

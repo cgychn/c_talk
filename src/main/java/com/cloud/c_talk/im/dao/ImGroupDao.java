@@ -64,4 +64,13 @@ public class ImGroupDao {
         return mongoTemplate.count(query, ImGroup.class);
     }
 
+    /**
+     * 群组账号获取群组
+     * @param groupAccount
+     * @return
+     */
+    public ImGroup getGroupByGroupAccount(String groupAccount) {
+        Query query = new Query(Criteria.where("groupAccount").is(groupAccount));
+        return mongoTemplate.findOne(query, ImGroup.class);
+    }
 }

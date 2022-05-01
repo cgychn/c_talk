@@ -97,4 +97,13 @@ public class UserDao {
         return mongoTemplate.count(query,C_TalkUser.class);
     }
 
+    /**
+     * 根据用户名获取用户对象
+     * @param friendUsername
+     * @return
+     */
+    public C_TalkUser getUserByUsername(String friendUsername) {
+        Query query = new Query(Criteria.where("username").is(friendUsername));
+        return mongoTemplate.findOne(query, C_TalkUser.class);
+    }
 }

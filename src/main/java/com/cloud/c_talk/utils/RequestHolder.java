@@ -1,6 +1,7 @@
 package com.cloud.c_talk.utils;
 
 import com.cloud.c_talk.security.token.entity.Token;
+import com.cloud.c_talk.user.entity.C_TalkUser;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,4 +86,6 @@ public class RequestHolder {
         HttpServletRequest request = getHttpServletRequest();
         return (Token) request.getAttribute("token_obj");
     }
+
+
 }
