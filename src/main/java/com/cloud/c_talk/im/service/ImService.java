@@ -20,6 +20,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 
 @Service
 public class ImService {
@@ -122,6 +124,32 @@ public class ImService {
         return new Page<>(
                 userGroupRelationDao.getGroupsByMainUsername(filter), userGroupRelationDao.getCountGroupsByMainUsername(filter)
         );
+    }
+
+    /**
+     * 成为好友
+     * @param mainUsername
+     * @param friendUsername
+     */
+    public void becomeFriend (String mainUsername, String friendUsername) {
+        UserFriendRelation userFriendRelation = new UserFriendRelation();
+        userFriendRelation.setMainUsername(mainUsername);
+        userFriendRelation.setFriendUsername(friendUsername);
+        userFriendRelation.setStatus(0);
+        userFriendRelation.setCohesion(0);
+        userFriendRelation.setBecomeFriendDate(new Date());
+        userFriendRelationDao.insertFriendRel(userFriendRelation);
+    }
+
+    /**
+     * 加入群聊
+     * @param mainUsername
+     * @param groupAccount
+     */
+    public void enterGroup (String mainUsername, String groupAccount) {
+        UserGroupRelation userGroupRelation = new UserGroupRelation();
+        userGroupRelation.setMainUsername(mainUsername);
+        userGroupRelationDao.insertGroupRel(userGroupRelation);
     }
 
 }
