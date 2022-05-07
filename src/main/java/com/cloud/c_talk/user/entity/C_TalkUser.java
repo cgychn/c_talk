@@ -26,6 +26,16 @@ public class C_TalkUser {
 
     private Date regTime;
 
+    private String avator; // 头像
+
+    public String getAvator() {
+        return avator;
+    }
+
+    public void setAvator(String avator) {
+        this.avator = avator;
+    }
+
     public Date getRegTime() {
         return regTime;
     }

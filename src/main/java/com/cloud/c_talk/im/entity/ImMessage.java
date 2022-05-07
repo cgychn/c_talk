@@ -13,7 +13,7 @@ public class ImMessage {
 
     private String msgContent;
 
-    private int type; // 0：文本 1：链接 3：视频 4：图片 5：文件
+    private int type; // 0：文本 1：链接 2：视频 3：图片 4：文件
 
     private Date sendDateTime;
 
